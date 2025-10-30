@@ -1,5 +1,6 @@
 import pool from "../db/db";
 import { User, UserResponse } from "../model/user";
+import { UpdateDTO } from "../validations/user";
 
 export default class UserRepository {
     static async findByEmail(email: string): Promise<User | null> {
@@ -14,5 +15,27 @@ export default class UserRepository {
     static async findById(id: string): Promise<UserResponse | null> {
         const result = await pool.query("SELECT email, first_name, last_name, profile_image FROM users WHERE id = $1", [id]);
         return result.rows[0] || null;
+    }
+
+     static async update(id: string, data: UpdateDTO): Promise<UserResponse | null> {
+        const fields = [];
+        const values: any[] = [];
+        let paramIndex = 1;
+
+        if (data.first_name) {
+            fields.push(`first_name = $${++paramIndex}`);
+            values.push(data.first_name);
+        }
+
+        if (data.last_name) {
+            fields.push(`last_name = $${++paramIndex}`);
+            values.push(data.last_name);
+        }
+
+        if (fields.length === 0)  return null;
+
+        const query = `UPDATE users SET ${fields.join(", ")} WHERE id = $1`;
+        const {rows}= await pool.query(query, [id, ...values]);
+        return  rows[0] || null;
     }
 }

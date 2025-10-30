@@ -29,4 +29,13 @@ export default class UserController {
             next(error);
         }
     }
+
+    static async updateProfile(req:Request, res:Response, next:NextFunction) {
+        try {
+            const data = await UserService.updateProfile(req.user!.id, req.body);
+            successResponse(res, "User profile updated successfully", data);
+        } catch (error) {
+            next(error);
+        }
+    }
 }

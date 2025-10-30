@@ -7,6 +7,7 @@ import { generateJWT } from "../utils/jwt";
 import {v7 as uuid} from "uuid";
 import  Validation  from "../validations/validation";
 import { User, UserResponse } from "../model/user";
+import NotFoundException from "../error/not_found_exception";
 
 export default class UserService{
     static async register(dto:RegisterDTO){
@@ -46,5 +47,16 @@ export default class UserService{
 
     static async getProfile(id: string): Promise<UserResponse | null> {
         return UserRepository.findById(id);
+    }
+
+    static async updateProfile(id: string, dto: Partial<User>): Promise<UserResponse | null> {
+        const validData = Validation.validate(UserValidation.UPDATE, dto);
+        const user = UserRepository.update(id, validData);
+
+        if (!user) {
+            throw new NotFoundException("User not found");
+        }
+
+        return user;
     }
 }
