@@ -4,6 +4,7 @@ import cors from "cors";
 import helmet from "helmet";
 import userRoute from "./routes/user.route";
 import bannerRoute from "./routes/banner.route";
+import serviceRoute from "./routes/service.route";
 import { errorMiddleware } from "./middlewares/error.midleware";
 
 dotenv.config();
@@ -16,6 +17,7 @@ app.use(helmet());
 
 app.use("", userRoute);
 app.use("/banners", bannerRoute);
+app.use("/services", serviceRoute);
 
 app.use(errorMiddleware)
 
