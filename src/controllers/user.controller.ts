@@ -20,4 +20,13 @@ export default class UserController {
             next(error);
         }
     }
+
+    static async getProfile(req:Request, res:Response, next:NextFunction) {
+        try {
+            const data = await UserService.getProfile(req.user!.id);
+            successResponse(res, "User profile fetched successfully", data);
+        } catch (error) {
+            next(error);
+        }
+    }
 }

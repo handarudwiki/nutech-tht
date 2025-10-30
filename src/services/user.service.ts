@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import { generateJWT } from "../utils/jwt";
 import {v7 as uuid} from "uuid";
 import  Validation  from "../validations/validation";
+import { User, UserResponse } from "../model/user";
 
 export default class UserService{
     static async register(dto:RegisterDTO){
@@ -41,5 +42,9 @@ export default class UserService{
         return {
             token: generateJWT(user),
         };
+    }
+
+    static async getProfile(id: string): Promise<UserResponse | null> {
+        return UserRepository.findById(id);
     }
 }
