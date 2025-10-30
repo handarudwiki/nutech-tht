@@ -7,7 +7,7 @@ import { generateJWT } from "../utils/jwt";
 import {v7 as uuid} from "uuid";
 import  Validation  from "../validations/validation";
 import { User, UserResponse } from "../model/user";
-import NotFoundException from "../error/not_found_exception";
+import dotenv from "dotenv";
 
 export default class UserService{
     static async register(dto:RegisterDTO){
@@ -53,9 +53,13 @@ export default class UserService{
         const validData = Validation.validate(UserValidation.UPDATE, dto);
         const user = UserRepository.update(id, validData);
 
-        if (!user) {
-            throw new NotFoundException("User not found");
-        }
+        return user;
+    }
+
+    static async updateProfileImage(id: string, profileImagePath: string): Promise<UserResponse | null> {
+        const validData = Validation.validate(UserValidation.PROFILE_IMAGE, { profile_image: profileImagePath });
+        validData.profile_image = `${process.env.APP_URL}/${validData.profile_image}`;
+        const user = await UserRepository.updateProfileImage(id, validData.profile_image);
 
         return user;
     }

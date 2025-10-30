@@ -38,4 +38,13 @@ export default class UserController {
             next(error);
         }
     }
+
+    static async updateProfileImage(req:Request, res:Response, next:NextFunction) {
+        try {
+            const data = await UserService.updateProfileImage(req.user!.id, req.file!.path);
+            successResponse(res, "User profile image updated successfully", data);
+        } catch (error) {
+            next(error);
+        }
+    }
 }

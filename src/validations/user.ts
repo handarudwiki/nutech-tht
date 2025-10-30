@@ -17,6 +17,10 @@ export default class UserValidation{
         first_name: z.string().min(2).max(50).optional(),
         last_name: z.string().min(2).max(50).optional(),
     })
+
+    static readonly PROFILE_IMAGE = z.object({
+        profile_image: z.string()
+    });
 }
 
 export type RegisterDTO = z.infer<typeof UserValidation.REGISTER>;

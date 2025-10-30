@@ -38,4 +38,9 @@ export default class UserRepository {
         const {rows}= await pool.query(query, [id, ...values]);
         return  rows[0] || null;
     }
+
+    static async updateProfileImage(id: string, profileImagePath: string): Promise<UserResponse | null> {
+        const result = await pool.query("UPDATE users SET profile_image = $1 WHERE id = $2 RETURNING email, first_name, last_name, profile_image", [profileImagePath, id]);
+        return result.rows[0] || null;
+    }   
 }
