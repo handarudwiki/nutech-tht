@@ -23,4 +23,15 @@ export default class TransactionController {
             next(error);
         }
     }
+
+    static async payment(req:Request, res:Response, next:NextFunction) {
+        try {
+            const userId = req.user!.id;
+            const dto = req.body;
+            const result = await TransactionService.payment(userId, dto);
+            successResponse(res,"Payment Success", result);
+        } catch (error) {
+            next(error);
+        }
+    }
 }
