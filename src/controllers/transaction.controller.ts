@@ -34,4 +34,15 @@ export default class TransactionController {
             next(error);
         }
     }
+
+    static async getAllTransaction(req:Request, res:Response, next:NextFunction) {
+        try {
+            const userId = req.user!.id;
+            const dto = req.query;
+            const transactions = await TransactionService.getAllTransaction(userId, dto as any);
+            successResponse(res, "Get Transactions Success", transactions);
+        } catch (error) {
+            next(error);
+        }
+    }
 }

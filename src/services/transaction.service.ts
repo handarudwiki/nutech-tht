@@ -6,7 +6,7 @@ import BalanceRepository from "../repositories/balance.repository";
 import ServiceRepository from "../repositories/service.repository";
 import TransactionRepository from "../repositories/transaction.repository";
 import { generateInvoiceNumber } from "../utils/invoice";
-import TransactionValidation, { PaymentDTO, TopupDTO } from "../validations/transaction";
+import TransactionValidation, { FilterDTO, PaymentDTO, TopupDTO } from "../validations/transaction";
 import Validation from "../validations/validation";
 
 export default class TransactionService {
@@ -90,5 +90,10 @@ export default class TransactionService {
         } finally {
             client.release();
         }
+    }
+
+    static async getAllTransaction(userId: string, dto: FilterDTO): Promise<Transaction[]> {
+        const validData = Validation.validate(TransactionValidation.FILTER, dto);
+        return TransactionRepository.getAllTransaction(userId, validData);
     }
 }
