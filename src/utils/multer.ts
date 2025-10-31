@@ -3,7 +3,7 @@ import multer, { FileFilterCallback } from "multer";
 
 const storage = multer.diskStorage({
     destination: (req:Request, file, cb) => {
-        cb(null, "src/uploads/profile"); 
+        cb(null, "uploads/profile"); 
     },
     filename: (req:Request, file, cb) => {
         const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
