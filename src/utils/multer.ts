@@ -1,5 +1,6 @@
 import { Request } from "express";
 import multer, { FileFilterCallback } from "multer";
+import BadRequestException from "../error/bad_request_exception";
 
 const storage = multer.diskStorage({
     destination: (req:Request, file, cb) => {
@@ -15,7 +16,7 @@ const fileFilter = (req:Request, file:Express.Multer.File, cb:FileFilterCallback
   const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
 
   if (!allowedTypes.includes(file.mimetype)) {
-    return cb(new Error("Only .jpg, .jpeg, and .png files are allowed!"));
+    return cb(new BadRequestException("Only .jpg, .jpeg, and .png files are allowed!"));
   }
 
   cb(null, true);
